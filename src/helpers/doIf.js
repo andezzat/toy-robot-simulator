@@ -1,3 +1,3 @@
-const doIf = (predicate, fn) => x => predicate ? fn(x) : x;
+const doIf = (predicate, fn) => x => predicate(x) ? fn(x) : x;
 
 module.exports = doIf;
