@@ -89,24 +89,6 @@ describe('createTable().place()', async assert => {
   }
 });
 
-describe('createTable().getObjectsOnTable()', async assert => {
-  const table = createTable({ maxX: 25, maxY: 25 });
-  table.place({ name: 'robotica1', x: 5, y: 4, f: SOUTH });
-  table.place({ name: 'robotica2', x: 3, y: 12, f: WEST });
-  table.place({ name: 'robotica3', x: 7, y: 10, f: EAST });
-
-  assert({
-    given: 'N/A',
-    should: 'return all {}s on table',
-    actual: table.getDimensions(),
-    expected: {
-      robotica1: { name: 'robotica1', x: 5, y: 4, f: SOUTH },
-      robotica2: { name: 'robotica2', x: 3, y: 12, f: WEST },
-      robotica3: { name: 'robotica3', x: 7, y: 10, f: EAST },
-    },
-  });
-});
-
 describe('createTable().move()', async assert => {
   // Valid Moves
   {
@@ -197,6 +179,53 @@ describe('createTable().move()', async assert => {
       should: 'return {} w/ same position',
       actual: table.move('robotica1'),
       expected: { name: 'robotica1', x: 0, y: 8, f: WEST },
+    });
+  }
+});
+
+describe('createTable().turn()', async assert => {
+  {
+    const table = createTable({ maxX: 9, maxY: 3 });
+    table.place({ name: 'robotica1', x: 3, y: 3, f: NORTH });
+  
+    assert({
+      given: 'name of {} to move & direction',
+      should: 'return {} w/ new facing direction',
+      actual: table.turn('robotica1', LEFT),
+      expected: { name: 'robotica1', x: 3, y: 3, f: WEST },
+    });
+  }
+  {
+    const table = createTable({ maxX: 5, maxY: 10 });
+    table.place({ name: 'robotica1', x: 5, y: 0, f: SOUTH });
+  
+    assert({
+      given: 'name of {} to move & direction',
+      should: 'return {} w/ new facing direction',
+      actual: table.turn('robotica1', RIGHT),
+      expected: { name: 'robotica1', x: 5, y: 0, f: WEST },
+    });
+  }
+  {
+    const table = createTable({ maxX: 4, maxY: 2 });
+    table.place({ name: 'robotica1', x: 3, y: 1, f: EAST });
+  
+    assert({
+      given: 'name of {} to move & direction',
+      should: 'return {} w/ new facing direction',
+      actual: table.turn('robotica1', LEFT),
+      expected: { name: 'robotica1', x: 3, y: 1, f: NORTH },
+    });
+  }
+  {
+    const table = createTable({ maxX: 9, maxY: 4 });
+    table.place({ name: 'robotica1', x: 2, y: 0, f: WEST });
+  
+    assert({
+      given: 'name of {} to move & direction',
+      should: 'return {} w/ new facing direction',
+      actual: table.turn('robotica1', RIGHT),
+      expected: { name: 'robotica1', x: 2, y: 0, f: NORTH },
     });
   }
 });
