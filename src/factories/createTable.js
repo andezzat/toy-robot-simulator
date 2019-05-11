@@ -29,7 +29,6 @@ const createTable = ({ maxX = 5, maxY = 5 } = {}) => {
     && y >= 0 && y <= maxY;
   const isObjectValid = obj => isPositionValid(obj) && CARDINAL_DIRECTIONS.isValid(obj.f);
 
-
   return {
     getObject,
 
@@ -57,9 +56,6 @@ const createTable = ({ maxX = 5, maxY = 5 } = {}) => {
     )(name),
   };
 };
-
-createTable.DIRECTIONS = DIRECTIONS;
-createTable.CARDINAL_DIRECTIONS = CARDINAL_DIRECTIONS;
 
 
 module.exports = createTable;

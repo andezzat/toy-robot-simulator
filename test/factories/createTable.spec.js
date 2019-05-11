@@ -1,10 +1,11 @@
 const { describe } = require('riteway');
 
-const createTable = require('../../src/factories/createTable');
 const {
   CARDINAL_DIRECTIONS: { NORTH, EAST, SOUTH, WEST },
   DIRECTIONS: { LEFT, RIGHT },
-} = require('../../src/factories/createTable');
+} = require('../../src/constants');
+
+const createTable = require('../../src/factories/createTable');
 
 
 describe('createTable().getDimensions()', async assert => {
