@@ -15,7 +15,7 @@ const DIRECTIONS = {
 const createTable = ({ maxX = 5, maxY = 5 } = {}) => {
   let objectsOnTable = {};
 
-  const getObject = name => objectsOnTable.find(o => o.name === name);
+  const getObject = name => objectsOnTable[name];
 
   const isPositionValid = ({ x, y }) =>
     x >= 0 && x <= maxX
@@ -29,12 +29,14 @@ const createTable = ({ maxX = 5, maxY = 5 } = {}) => {
     objectsOnTable = { ...objectsOnTable, [name]: { name, x, y, f } };
   };
 
-  const getNewPosition = obj => ({
-    NORTH: { ...obj, x: obj.x + 1 },
-    EAST: { ...obj, y: obj.y + 1 },
-    SOUTH: { ...obj, x: obj.x - 1 },
-    WEST: { ...obj, y: obj.y - 1 },
-  })[obj.f];
+  const positionUpdateFns = {
+    [CARDINAL_DIRECTIONS.NORTH]: obj => ({ ...obj, y: obj.y + 1 }),
+    [CARDINAL_DIRECTIONS.EAST]: obj => ({ ...obj, x: obj.x + 1 }),
+    [CARDINAL_DIRECTIONS.SOUTH]: obj => ({ ...obj, y: obj.y - 1 }),
+    [CARDINAL_DIRECTIONS.WEST]: obj => ({ ...obj, x: obj.x - 1 }),
+  };
+
+  const updateObjPosition = obj => positionUpdateFns[obj.f](obj);
 
 
   return {
@@ -47,7 +49,12 @@ const createTable = ({ maxX = 5, maxY = 5 } = {}) => {
 
     getObject,
 
-    move: () => ({}),
+    move: name => pipe(
+      getObject,
+      updateObjPosition,
+      doIf(isPositionValid, updateObjectsOnTable),
+      () => getObject(name),
+    )(name),
   };
 };
 

@@ -89,7 +89,7 @@ describe('createTable().place()', async assert => {
   }
 });
 
-describe('createTable().move()', async assert => {
+describe.only('createTable().move()', async assert => {
   // Valid Moves
   {
     const table = createTable({ maxX: 9, maxY: 3 });
@@ -104,13 +104,13 @@ describe('createTable().move()', async assert => {
   }
   {
     const table = createTable({ maxX: 4, maxY: 12 });
-    table.place({ name: 'robotica1', x: 4, y: 8, f: EAST });
+    table.place({ name: 'robotica1', x: 3, y: 8, f: EAST });
 
     assert({
       given: 'name of {} to move',
       should: 'return {} w/ new position',
       actual: table.move('robotica1'),
-      expected: { name: 'robotica1', x: 5, y: 8, f: EAST },
+      expected: { name: 'robotica1', x: 4, y: 8, f: EAST },
     });
   }
   {
@@ -150,13 +150,13 @@ describe('createTable().move()', async assert => {
   }
   {
     const table = createTable({ maxX: 8, maxY: 8 });
-    table.place({ name: 'robotica1', x: 0, y: 4, f: EAST });
+    table.place({ name: 'robotica1', x: 8, y: 4, f: EAST });
 
     assert({
       given: 'name of {} to move (while {} at edge)',
       should: 'return {} w/ same position',
       actual: table.move('robotica1'),
-      expected: { name: 'robotica1', x: 0, y: 4, f: EAST },
+      expected: { name: 'robotica1', x: 8, y: 4, f: EAST },
     });
   }
   {
