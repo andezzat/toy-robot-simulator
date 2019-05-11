@@ -1,0 +1,12 @@
+{
+  "name": "toy-robot-simulator",
+  "version": "1.0.0",
+  "main": "src/app.js",
+  "repository": "git@github.com:andezzat/toy-robot-simulator.git",
+  "author": "Andrew Salib <andezzat@gmail.com>",
+  "license": "MIT",
+  "private": false,
+  "scripts": {
+    "start": "node src/app.js"
+  }
+}
