@@ -1,43 +1,60 @@
 const { pipe, doIf } = require('../helpers');
 
+
+const NORTH = 'north';
+const EAST = 'east';
+const SOUTH = 'south';
+const WEST = 'west';
+const LEFT ='left';
+const RIGHT = 'right';
+
 const CARDINAL_DIRECTIONS = {
-  NORTH: 'north',
-  EAST: 'east',
-  SOUTH: 'south',
-  WEST: 'west',
+  NORTH,
+  EAST,
+  SOUTH,
+  WEST,
 };
 const DIRECTIONS = {
   LEFT: 'left',
   RIGHT: 'right',
 };
 
+const getIndexOf = x => Object.values(CARDINAL_DIRECTIONS).indexOf(x);
+const getNextIndex = (direction, maxIndex) => i => direction === RIGHT
+  ? i === maxIndex ? 0 : i + 1
+  : i === 0 ? maxIndex : i - 1;
+const getByIndex = i => Object.values(CARDINAL_DIRECTIONS)[i];
+const getNextCardinalDirection = (current, direction) => pipe(
+  getIndexOf,
+  getNextIndex(direction, Object.values(CARDINAL_DIRECTIONS).length - 1),
+  getByIndex,
+)(current);
 
 const createTable = ({ maxX = 5, maxY = 5 } = {}) => {
   let objectsOnTable = {};
 
   const getObject = name => objectsOnTable[name];
 
+  const isDirectionValid = direction => Object.values(DIRECTIONS).includes(direction);
+  const isCardinalDirectionValid = ({ f }) => Object.values(CARDINAL_DIRECTIONS).includes(f);
   const isPositionValid = ({ x, y }) =>
     x >= 0 && x <= maxX
     && y >= 0 && y <= maxY;
-
-  const isObjectValid = ({ x, y, f }) =>
-    isPositionValid({ x, y })
-    && Object.values(CARDINAL_DIRECTIONS).includes(f);
+  const isObjectValid = obj => isPositionValid(obj) && isCardinalDirectionValid(obj);
 
   const updateObjectsOnTable = ({ name, x, y, f }) => {
     objectsOnTable = { ...objectsOnTable, [name]: { name, x, y, f } };
   };
-
-  const positionUpdateFns = {
-    [CARDINAL_DIRECTIONS.NORTH]: obj => ({ ...obj, y: obj.y + 1 }),
-    [CARDINAL_DIRECTIONS.EAST]: obj => ({ ...obj, x: obj.x + 1 }),
-    [CARDINAL_DIRECTIONS.SOUTH]: obj => ({ ...obj, y: obj.y - 1 }),
-    [CARDINAL_DIRECTIONS.WEST]: obj => ({ ...obj, x: obj.x - 1 }),
-  };
-
-  const updateObjPosition = obj => positionUpdateFns[obj.f](obj);
-
+  const updateObjPosition = obj => ({
+    [NORTH]: () => ({ ...obj, y: obj.y + 1 }),
+    [EAST]: () => ({ ...obj, x: obj.x + 1 }),
+    [SOUTH]: () => ({ ...obj, y: obj.y - 1 }),
+    [WEST]: () => ({ ...obj, x: obj.x - 1 }),
+  })[obj.f]();
+  const updateObjCardinalDirection = direction => obj => ({
+    ...obj,
+    f: getNextCardinalDirection(obj.f, direction),
+  })
 
   return {
     getDimensions: () => ({ maxX, maxY }),
@@ -48,6 +65,15 @@ const createTable = ({ maxX = 5, maxY = 5 } = {}) => {
     ),
 
     getObject,
+
+    turn: (name, direction) => pipe(
+      getObject,
+      doIf.withBool(isDirectionValid(direction), pipe(
+        updateObjCardinalDirection(direction),
+        updateObjectsOnTable,
+      )),
+      () => getObject(name),
+    )(name),
 
     move: name => pipe(
       getObject,

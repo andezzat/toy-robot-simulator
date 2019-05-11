@@ -89,7 +89,7 @@ describe('createTable().place()', async assert => {
   }
 });
 
-describe.only('createTable().move()', async assert => {
+describe('createTable().move()', async assert => {
   // Valid Moves
   {
     const table = createTable({ maxX: 9, maxY: 3 });
