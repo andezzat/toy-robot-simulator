@@ -7,32 +7,6 @@ const {
 } = require('../../src/factories/createTable');
 
 
-describe('createTable.CARDINAL_DIRECTIONS', async assert => {
-  assert({
-    given: 'N/A',
-    should: 'return correct cardinal directions {}',
-    actual: createTable.CARDINAL_DIRECTIONS,
-    expected: {
-      NORTH: 'north',
-      EAST: 'east',
-      SOUTH: 'south',
-      WEST: 'west',
-    },
-  });
-});
-
-describe('createTable.DIRECTIONS', async assert => {
-  assert({
-    given: 'N/A',
-    should: 'return correct directions {}',
-    actual: createTable.DIRECTIONS,
-    expected: {
-      LEFT: 'left',
-      RIGHT: 'right',
-    },
-  });
-});
-
 describe('createTable().getDimensions()', async assert => {
   const table = createTable({ maxX: 20, maxY: 15 });
   assert({
