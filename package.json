@@ -7,6 +7,11 @@
   "license": "MIT",
   "private": false,
   "scripts": {
-    "start": "node src/app.js"
+    "start": "node src/app.js",
+    "test": "riteway test/**/*.spec.js | tap-nirvana"
+  },
+  "devDependencies": {
+    "riteway": "^6.0.3",
+    "tap-nirvana": "^1.1.0"
   }
 }
