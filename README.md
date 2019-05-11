@@ -29,4 +29,5 @@ There's a spec included that tests the logic & functionality of the `createTable
 Run it in CLI via `yarn test`.
 
 The test leverages `riteway` & `tap-nirvana`.
+
 `riteway`: a super simple testing library that provides basic assertion functionality that aims to answer the most important questions a unit test should. (More info: https://github.com/ericelliott/riteway)
